@@ -43,6 +43,7 @@ public class PaymentService {
         this.payments = payments;
     }
 
+
     @Transactional
   public PaymentResponse createPayment(String auth, String idemKey, PaymentRequest req){
     var merchant = merchantService.merchantFromAuth(auth);
@@ -53,14 +54,8 @@ public class PaymentService {
       if(existing.isPresent()) return toResponse(existing.get());
     }
 
-    Double interest = null;
-    BigDecimal total = req.amount();
-    if ("CARD".equalsIgnoreCase(req.method()) && req.installments()!=null && req.installments()>1){
-      interest = 1.0; // 1%/mês
-      var base = new BigDecimal("1.01");
-      var factor = base.pow(req.installments());
-      total = req.amount().multiply(factor).setScale(2, RoundingMode.HALF_UP);
-    }
+    BigDecimal total = calcularImposto(req);
+    Double interest = (!total.equals(req.amount()) ? 1.0 : null);
 
     var payment = Payment.builder()
         .id("pay_"+UUID.randomUUID().toString().substring(0,8))
@@ -84,6 +79,21 @@ public class PaymentService {
 
     return toResponse(payment);
   }
+
+    private BigDecimal calcularImposto(PaymentRequest req) {
+        if (!"CARD".equalsIgnoreCase(req.method())){
+            return req.amount();
+        }
+
+        if(req.installments() == null || req.installments() <= 1) {
+            return req.amount();
+        }
+
+        var base = new BigDecimal("1.01");
+        var factor = base.pow(req.installments());
+        return req.amount().multiply(factor).setScale(2, RoundingMode.HALF_UP);
+
+    }
 
   public PaymentResponse getPayment(String id){
     return toResponse(payments.findById(id)

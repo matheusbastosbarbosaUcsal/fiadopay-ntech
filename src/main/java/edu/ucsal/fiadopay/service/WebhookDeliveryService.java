@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
@@ -23,21 +24,22 @@ public class WebhookDeliveryService {
     private final MerchantService merchantService;
     private final ObjectMapper objectMapper;
     private final ExecutorService executorService;
+    private final HttpClient client;
 
     @Value("${fiadopay.webhook-secret}") String secret;
 
-    public WebhookDeliveryService(WebhookDeliveryRepository deliveries, MerchantService merchantService, ObjectMapper objectMapper, ExecutorService executorService) {
+    public WebhookDeliveryService(WebhookDeliveryRepository deliveries, MerchantService merchantService, ObjectMapper objectMapper, ExecutorService executorService, HttpClient client) {
         this.deliveries = deliveries;
         this.merchantService = merchantService;
         this.objectMapper = objectMapper;
         this.executorService = executorService;
+        this.client = client;
     }
 
     protected void tryDeliver(Long deliveryId){
         var d = deliveries.findById(deliveryId).orElse(null);
         if (d==null) return;
         try {
-            var client = HttpClient.newHttpClient();
             var req = HttpRequest.newBuilder(URI.create(d.getTargetUrl()))
                     .header("Content-Type","application/json")
                     .header("X-Event-Type", d.getEventType())
