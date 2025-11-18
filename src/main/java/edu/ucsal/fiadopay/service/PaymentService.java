@@ -2,8 +2,8 @@ package edu.ucsal.fiadopay.service;
 
 import edu.ucsal.fiadopay.annotations.PaymentCalculator;
 import edu.ucsal.fiadopay.annotations.PaymentMethod;
-import edu.ucsal.fiadopay.controller.PaymentRequest;
-import edu.ucsal.fiadopay.controller.PaymentResponse;
+import edu.ucsal.fiadopay.dto.PaymentRequest;
+import edu.ucsal.fiadopay.dto.PaymentResponse;
 import edu.ucsal.fiadopay.domain.Payment;
 import edu.ucsal.fiadopay.repo.PaymentRepository;
 import org.springframework.http.HttpStatus;

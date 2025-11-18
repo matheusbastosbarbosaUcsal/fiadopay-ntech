@@ -1,4 +1,4 @@
-package edu.ucsal.fiadopay.controller;
+package edu.ucsal.fiadopay.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

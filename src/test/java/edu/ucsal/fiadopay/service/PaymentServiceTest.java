@@ -1,6 +1,6 @@
 package edu.ucsal.fiadopay.service;
 
-import edu.ucsal.fiadopay.controller.PaymentRequest;
+import edu.ucsal.fiadopay.dto.PaymentRequest;
 import edu.ucsal.fiadopay.domain.Merchant;
 import edu.ucsal.fiadopay.domain.Payment;
 import edu.ucsal.fiadopay.repo.PaymentRepository;

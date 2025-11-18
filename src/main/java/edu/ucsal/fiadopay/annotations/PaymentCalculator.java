@@ -1,6 +1,6 @@
 package edu.ucsal.fiadopay.annotations;
 
-import edu.ucsal.fiadopay.controller.PaymentRequest;
+import edu.ucsal.fiadopay.dto.PaymentRequest;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
