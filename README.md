@@ -13,6 +13,18 @@ mvn spring-boot:run
 H2 console: http://localhost:8080/h2  
 Swagger UI: http://localhost:8080/swagger-ui.html
 
+## Contexto
+Foi utilizado a opção 1, refatorando o código com foco em Engenharia. 
+
+## Padrões
+O foco inicial foi no SRP, fazendo separação de responsabilidade no service do PaymentService, dessa forma foram criadas a classe WebhookDeliveryService, MerchantService e PaymentProcessor. Além disso, foi separado criado um método na PaymentService para o calculo de juros.
+
+## Threads
+O processo assíncrono foi mudado para utilizar ExecutorService. Essa mudança permite controlar a quantidade de threads disponíveis e, dessa forma, protege a aplicação de gargalos, evitando a rejeitando ou enfileirando tasks.
+
+## Anotações
+Foi criada a anotação PaymentMethod para ter um controle maior dos tipos de pagamento e identificar de forma mais clara. Permite que o calculo de juros não fique preso ao tipo "CARD", pois se em algum outro momento venha a ter juros/taxa para outros pagamentos, não precisa mudar o método.
+
 ## Fluxo
 
 1) **Cadastrar merchant**
