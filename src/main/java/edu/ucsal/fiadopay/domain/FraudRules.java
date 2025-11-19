@@ -25,4 +25,13 @@ public class FraudRules {
         }
         return false;
     }
+    
+    @AntiFraud(name = "PixMuitoAlto", limit = 10000.00)
+    public boolean verificarPix(PaymentRequest req) {
+        if ("PIX".equalsIgnoreCase(req.method()) &&
+            req.amount().compareTo(new BigDecimal("10000.00")) > 0) {
+            return true;
+        }
+        return false;
+    }
 }
