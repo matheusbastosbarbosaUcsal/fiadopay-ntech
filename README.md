@@ -23,7 +23,13 @@ O foco inicial foi no SRP, fazendo separação de responsabilidade no service do
 O processo assíncrono foi mudado para utilizar ExecutorService. Essa mudança permite controlar a quantidade de threads disponíveis e, dessa forma, protege a aplicação de gargalos, evitando a rejeitando ou enfileirando tasks.
 
 ## Anotações
-Foi criada a anotação PaymentMethod para ter um controle maior dos tipos de pagamento e identificar de forma mais clara. Permite que o calculo de juros não fique preso ao tipo "CARD", pois se em algum outro momento venha a ter juros/taxa para outros pagamentos, não precisa mudar o método.
+Foi criada a anotação @PaymentMethod para ter um controle maior dos tipos de pagamento e identificar de forma mais clara. Permite que o calculo de juros não fique preso ao tipo "CARD", pois se em algum outro momento venha a ter juros/taxa para outros pagamentos, não precisa mudar o método.
+
+Foi utilizada a anotação @AntiFraud para definir limites máximos de valor para pagamentos via PIX, boleto e cartão. Sempre que o valor informado ultrapassa o limite configurado, o método anotado retorna true, indicando uma possível tentativa de fraude.
+
+## Testes
+Foram implementados dois testes cobrindo os cenários mais importantes do fluxo de pagamento: pagamento via PIX e pagamento via cartão.
+A criação de pagamentos é uma etapa central do sistema, pois todo o restante do processo depende dela (persistência, cálculo de valores e disparo de webhooks). Esses testes garantem que o pagamento é criado corretamente, salvo no banco e que o webhook é acionado após a operação.
 
 ## Fluxo
 
